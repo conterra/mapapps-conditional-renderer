@@ -1,0 +1,37 @@
+{
+    "name": "dn_conditionalrenderer",
+    "version": "1.0.0",
+    "title": "${bundleName}",
+    "description": "${bundleDescription}",
+    "vendor": "con terra GmbH",
+    "main": "",
+    "productName": "devnet-mapapps-conditional-renderer",
+    "dependencies": {
+        "esri": "^4.6.0"
+    },
+    "components": [
+        {
+            "name": "Config",
+            "impl": "./ConditionalRendererConfigurator",
+            "provides": "conditional_renderer.ConditionalRendererConfigurator",
+            "immediate": true,
+            "properties":{
+              "layerRendererScalesMapping":[
+                {
+                  "layerId": "",
+                  "fallbackRenderer":{},
+                  "scaleRenderers":[],
+                  "fallbackFeatureReduction": {},
+                  "scaleFeatureReductions":[]
+                }
+              ]
+            },
+            "references": [
+                {
+                    "name": "_mapWidgetModel",
+                    "providing": "map-widget.MapWidgetModel"
+                }
+            ]
+        }
+    ]
+}
