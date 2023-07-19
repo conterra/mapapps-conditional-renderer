@@ -5,133 +5,321 @@
             "bundles"
         ],
         "allowedBundles": [
-            "system",
             "console",
-            "notifier",
-            "splashscreen",
-            "templatelayout",
-            "template-seasons",
-            "theme-autumn",
-            "theme-everlasting",
-            "map-init",
-            "map-preload-2D",
-            "toolset",
-            "banner",
-            "mapnavigation",
-            "popups-default",
-            "scalebar",
-            "locateme",
-            "parameter-url",
-            "search-ui",
-            "locator-store",
+            "system@^4.6.0",
+            "splashscreen@^4.6.0",
+            "templatelayout@^4.6.0",
+            "template-seasons@^4.6.0",
+            "theme-everlasting@^4.6.0",
+            "toolset@^4.6.0",
+            "map-init@^4.6.0",
             "toc",
-            "sample_helloworld"
+            "agssearch@^4.6.0",
+            "dn_conditionalrenderer"
         ]
     },
     "bundles": {
-        "banner": {
-            "BannerWidget": {
-                "label": "Developer Network",
-                "image": "resource('${app}:/images/logo_conterra.png')",
-                "imageWidth": 200,
-                "imagePosition": "above",
-                "link": "http://developernetwork.conterra.de"
+        "dn_conditionalrenderer": {
+            "Config": {
+                "layerRendererScalesMapping": [
+                    {
+                        "layerId": "unternehmen",
+                        "fallbackRenderer": {
+                            "type": "simple",
+                            "visualVariables": [
+                                {
+                                    "type": "size",
+                                    "field": "usto",
+                                    "minDataValue": 1,
+                                    "maxDataValue": 85,
+                                    "minSize": 2,
+                                    "maxSize": 30
+                                }
+                            ],
+                            "symbol": {
+                                "type": "simple-marker",
+                                "color": [
+                                    127,
+                                    132,
+                                    61,
+                                    255
+                                ],
+                                "angle": 0,
+                                "xoffset": 0,
+                                "yoffset": 0,
+                                "size": 4,
+                                "style": "circle",
+                                "outline": {
+                                    "type": "simple-line",
+                                    "color": [
+                                        0,
+                                        0,
+                                        0,
+                                        255
+                                    ],
+                                    "width": 0.7,
+                                    "style": "solid"
+                                }
+                            }
+                        },
+                        "scaleRenderers": [
+                            {
+                                "scaleFrom": 3000,
+                                "scaleTo": 50000,
+                                "renderer": {
+                                    "type": "heatmap",
+                                    "field": "usto",
+                                    "colorStops": [
+                                        {
+                                            "color": "rgba(115, 0, 115, 0)",
+                                            "ratio": 0
+                                        },
+                                        {
+                                            "color": "#820082",
+                                            "ratio": 0.083
+                                        },
+                                        {
+                                            "color": "#910091",
+                                            "ratio": 0.166
+                                        },
+                                        {
+                                            "color": "#a000a0",
+                                            "ratio": 0.249
+                                        },
+                                        {
+                                            "color": "#af00af",
+                                            "ratio": 0.332
+                                        },
+                                        {
+                                            "color": "#c300c3",
+                                            "ratio": 0.415
+                                        },
+                                        {
+                                            "color": "#d700d7",
+                                            "ratio": 0.498
+                                        },
+                                        {
+                                            "color": "#eb00eb",
+                                            "ratio": 0.581
+                                        },
+                                        {
+                                            "color": "#ff00ff",
+                                            "ratio": 0.664
+                                        },
+                                        {
+                                            "color": "#ff58a0",
+                                            "ratio": 0.747
+                                        },
+                                        {
+                                            "color": "#ff896b",
+                                            "ratio": 0.83
+                                        },
+                                        {
+                                            "color": "#ffb935",
+                                            "ratio": 0.913
+                                        },
+                                        {
+                                            "color": "#ffea00",
+                                            "ratio": 1
+                                        }
+                                    ],
+                                    "radius": 12,
+                                    "maxDensity": 0.04625,
+                                    "minDensity": 0
+                                }
+                            }
+                        ],
+                        "fallbackFeatureReduction": null,
+                        "scaleFeatureReductions": [
+                            {
+                                "scaleFrom": 50000,
+                                "scaleTo": 10000000,
+                                "featureReduction": {
+                                    "type": "cluster",
+                                    "fields": [
+                                        {
+                                            "name": "usto_total",
+                                            "alias": "Total usto",
+                                            "outStatistic": {
+                                                "onStatisticField": "usto",
+                                                "statisticType": "sum"
+                                            }
+                                        }
+                                    ],
+                                    "renderer": {
+                                        "type": "simple",
+                                        "symbol": {
+                                            "type": "simple-marker",
+                                            "style": "circle",
+                                            "color": "#007f99",
+                                            "size": 24,
+                                            "outline": {
+                                                "color": "#ebe6df",
+                                                "width": 1
+                                            }
+                                        },
+                                        "visualVariables": [
+                                            {
+                                                "type": "size",
+                                                "field": "usto_total",
+                                                "stops": [
+                                                    {
+                                                        "value": 0,
+                                                        "size": 8
+                                                    },
+                                                    {
+                                                        "value": 12,
+                                                        "size": 12
+                                                    },
+                                                    {
+                                                        "value": 500,
+                                                        "size": 18
+                                                    },
+                                                    {
+                                                        "value": 2500,
+                                                        "size": 48
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "clusterRadius": "120px",
+                                    "popupTemplate": {
+                                        "title": "Cluster summary",
+                                        "content": "This cluster represents {cluster_count} Unternehmen with {usto_total} ustos.",
+                                        "fieldInfos": [
+                                            {
+                                                "fieldName": "cluster_count",
+                                                "format": {
+                                                    "places": 0,
+                                                    "digitSeparator": true
+                                                }
+                                            },
+                                            {
+                                                "fieldName": "usto_total",
+                                                "format": {
+                                                    "places": 0,
+                                                    "digitSeparator": true
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "labelingInfo": [
+                                        {
+                                            "deconflictionStrategy": "none",
+                                            "labelExpressionInfo": {
+                                                "expression": "Text($feature.cluster_count, '#,###')"
+                                            },
+                                            "symbol": {
+                                                "type": "text",
+                                                "color": "white",
+                                                "font": {
+                                                    "family": "Noto Sans",
+                                                    "size": "12px"
+                                                }
+                                            },
+                                            "labelPlacement": "center-center"
+                                        }
+                                    ]
+                                }
+                            }
+                        ]
+                    }
+                ]
             }
+        },
+        "agssearch": {
+            "AGSStore": [
+                {
+                    "title": "St\u00F6rungen",
+                    "description": "Durchsucht die Beschreibung aller St\u00F6rungsmeldugen.",
+                    "omniSearchLabelAttr": "${details} (${melder})",
+                    "omniSearchSearchAttr": "details",
+                    "idProperty": "objectid",
+                    "url": "https://services.conterra.de/arcgis/rest/services/training/stoerungen/MapServer/0",
+                    "useIn": [
+                        "omnisearch",
+                        "selection"
+                    ],
+                    "filterOptions": {
+                        "suggestContains": true
+                    },
+                    "omniSearchTypingDelay": 500,
+                    "omniSearchPageSize": 20,
+                    "omniSearchDefaultLabel": "Suchbegriff eingeben...",
+                    "fetchIdProperty": true,
+                    "id": "stoerungStore",
+                    "pid": "agssearch-AGSStore-0",
+                    "type": "Dynamisch"
+                }
+            ]
         },
         "map-init": {
             "Config": {
                 "basemaps": [
                     {
-                        "id": "esri_street",
-                        "title": "Straßenkarte (grau)",
-                        "thumbnailUrl": "resource('${app}:/images/streets.png')",
-                        "selected": true,
-                        "basemap": "gray-vector"
+                        "id": "streets",
+                        "basemap": "streets-vector",
+                        "title": "Strassen",
+                        "selected": true
                     },
                     {
-                        "id": "esri_hybrid",
-                        "title": "Luftbild (hybrid)",
-                        "thumbnailUrl": "resource('${app}:/images/hybrid.png')",
-                        "basemap": "hybrid"
+                        "id": "satellite",
+                        "basemap": "satellite",
+                        "title": "Satellit"
+                    },
+                    {
+                        "id": "hybrid",
+                        "basemap": "hybrid",
+                        "title": "Hybrid"
                     }
                 ],
                 "map": {
-                    "layers": []
+                    "layers": [
+                        {
+                            "type": "GROUP",
+                            "id": "gwg_ausbau",
+                            "title": "GWG Ausbau",
+                            "visible": true,
+                            "layers": [
+                                {
+                                    "id": "unternehmen",
+                                    "title": "unternehmen",
+                                    "visible": true,
+                                    "type": "AGS_FEATURE",
+                                    "definitionExpression": "usto > 0",
+                                    "url": "https://dev0026w.conterra.de:6443/arcgis/rest/services/marketing/kls_adressmaster_reti/MapServer/0"
+                                }
+                            ]
+                        }
+                    ]
                 },
                 "view": {
                     "viewmode": "2D",
-                    "center": {
-                        "x": 774853,
-                        "y": 6610677,
+                    "extent": {
+                        "xmin": 831997.749000002,
+                        "ymin": 6771281.3835,
+                        "xmax": 865422.410700001,
+                        "ymax": 6811013.2799,
                         "spatialReference": 3857
-                    },
-                    "scale": 140000
+                    }
                 }
-            }
-        },
-        "themes": {
-            "ThemeModel": {
-                "_selectedTheme": "autumn"
-            },
-            "ThemeSelector": {
-                "componentEnabled": true
-            }
-        },
-        "toc": {
-            "Config": {
-                "showBasemaps" : true,
-                "showLayerLegend": true
             }
         },
         "toolset": {
             "ToolsetManager": {
                 "toolsets": [
                     {
-                        "id": "mapview_tools",
+                        "id": "defaultToolSet",
                         "tools": [
-                            "locateMeTool",
-                            "zoomInTool",
-                            "zoomOutTool",
-                            "compassTool",
-                            "restoreInitialViewTool",
-                            "viewmodeSwitcherTool"
+                            "*"
                         ],
                         "registerWidget": {
-                            "widgetRole": "mapview_tools"
+                            "widgetRole": "map_topleft"
                         },
                         "container": "ignore",
                         "windowType": "container",
-                        "cssClass": "muted",
-                        "tooltipPositions": [
-                            "before",
-                            "above",
-                            "below",
-                            "after"
-                        ]
-                    },
-                    {
-                        "id": "drawer_left",
-                        "title": "Werkzeuge",
-                        "cssClass": "ct-main-app-menu",
-                        "tools": [
-                            "tocToggleTool",
-                            "printingToggleTool",
-                            "sharelinkTool",
-                            "helloTool",
-                            "IMPRINT_Imprint_CustomInfoTool",
-                            "IMPRINT_Imprint_CustomInfoTool_mobile"
-                        ],
-                        "registerWidget": {
-                            "widgetRole": "drawer_button"
-                        },
-                        "container": "ignore",
-                        "windowType": "drawer_left",
-                        "tooltipPositions": [
-                            "after",
-                            "above",
-                            "below",
-                            "before"
-                        ]
+                        "cssClass": "muted"
                     }
                 ]
             }
