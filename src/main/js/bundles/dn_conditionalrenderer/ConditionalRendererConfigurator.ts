@@ -14,65 +14,78 @@
 /// limitations under the License.
 ///
 
-export default class ConditionalRendererConfigurator{
-    #mappings = [];
-    activate(): void{
-        this.getView().then(() => {
-            const view = this._mapWidgetModel.view;
-            if(!view){
-                return;
-            }
-            view.when(()=> {
-                this.iterateLayerRendererScalesMappings();
-                this.#mappings.forEach(mapping => {
-                    this.changeLayerRendererForScale(mapping, view.scale);
-                });
-                view.watch("scale", (newScale) => {
-                    this.#mappings.forEach(mapping => {
-                        this.changeLayerRendererForScale(mapping, newScale);
-                    });
+import { InjectedReference } from "apprt-core/InjectedReference";
+import { MapWidgetModel } from "map-widget/api";
+import { CustomFeatureReduction, CustomRenderer, ExtendedView, Mapping } from "./Interfaces";
+
+export default class ConditionalRendererConfigurator {
+
+    private mappings: Array<Mapping> = [];
+
+    private _mapWidgetModel: InjectedReference<MapWidgetModel>;
+    private _properties: InjectedReference<Record<string, any>>;
+
+    protected activate(): void {
+        this.getView().then(view => {
+            this.iterateLayerRendererScalesMappings();
+            this.mappings.forEach((mapping: Mapping) => {
+                this.changeLayerRendererForScale(mapping, view.scale);
+            });
+
+            view.watch("scale", (newScale) => {
+                this.mappings.forEach((mapping: Mapping) => {
+                    this.changeLayerRendererForScale(mapping, newScale);
                 });
             });
         });
     }
-    iterateLayerRendererScalesMappings(): void{
+
+    private iterateLayerRendererScalesMappings(): void {
         const layerRendererScalesMapping = this._properties.layerRendererScalesMapping;
+
         layerRendererScalesMapping.forEach(mapping => {
             const layerId = mapping.layerId;
             const map = this._mapWidgetModel.map;
-            const layer = map.allLayers.items.find( l => l.id === layerId);
-            if(layer){
-                this.#mappings.push({layer: layer, config: mapping});
+            const layer = map.allLayers.find((layer: __esri.Layer) => layer.id === layerId);
+            if (layer) {
+                this.mappings.push({ layer: layer, config: mapping });
             }
         });
     }
-    changeLayerRendererForScale(mapping, scale): void{
+
+    private changeLayerRendererForScale(mapping: Mapping, scale: number): void {
         const scaleRenderers = mapping.config.scaleRenderers;
         const scaleFeatureReductions = mapping.config.scaleFeatureReductions;
+
         const matchedRenderer =
-            scaleRenderers.find(r => scale > r.scaleFrom && scale < r.scaleTo);
-        if(matchedRenderer){
+            scaleRenderers.find((renderer: CustomRenderer) => scale > renderer.scaleFrom && scale < renderer.scaleTo);
+        if (matchedRenderer) {
             mapping.layer.renderer = matchedRenderer.renderer;
         }
-        else{
+        else {
             mapping.layer.renderer = mapping.config.fallbackRenderer;
         }
+
         const matchedFeatureReduction =
-            scaleFeatureReductions.find(r => scale > r.scaleFrom && scale < r.scaleTo);
-        if(matchedFeatureReduction){
-            mapping.layer.featureReduction  = matchedFeatureReduction.featureReduction ;
+            scaleFeatureReductions.find((reduction: CustomFeatureReduction) =>
+                scale > reduction.scaleFrom && scale < reduction.scaleTo);
+        if (matchedFeatureReduction) {
+            mapping.layer.featureReduction = matchedFeatureReduction.featureReduction;
         }
-        else{
+        else {
             mapping.layer.featureReduction = mapping.config.fallbackFeatureReduction;
         }
     }
-    getView(): Promise{
+
+    private getView(): Promise<ExtendedView> {
         const mapWidgetModel = this._mapWidgetModel;
+
         return new Promise((resolve) => {
             if (mapWidgetModel.view) {
                 resolve(mapWidgetModel.view);
             } else {
-                mapWidgetModel.watch("view", ({value: view}) => {
+                const watcher = mapWidgetModel.watch("view", ({ value: view }) => {
+                    watcher.remove();
                     resolve(view);
                 });
             }
