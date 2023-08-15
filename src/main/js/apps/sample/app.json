@@ -23,52 +23,33 @@
             "Config": {
                 "layerRendererScalesMapping": [
                     {
-                        "layerId": "unternehmen",
+                        "layerId": "trees",
                         "fallbackRenderer": {
                             "type": "simple",
                             "visualVariables": [
                                 {
                                     "type": "size",
-                                    "field": "usto",
-                                    "minDataValue": 1,
-                                    "maxDataValue": 85,
+                                    "field": "stammdurchmesser",
+                                    "minDataValue": 30,
+                                    "maxDataValue": 80,
                                     "minSize": 2,
                                     "maxSize": 30
                                 }
                             ],
                             "symbol": {
-                                "type": "simple-marker",
-                                "color": [
-                                    127,
-                                    132,
-                                    61,
-                                    255
-                                ],
-                                "angle": 0,
-                                "xoffset": 0,
-                                "yoffset": 0,
-                                "size": 4,
-                                "style": "circle",
-                                "outline": {
-                                    "type": "simple-line",
-                                    "color": [
-                                        0,
-                                        0,
-                                        0,
-                                        255
-                                    ],
-                                    "width": 0.7,
-                                    "style": "solid"
-                                }
+                                "type": "web-style",
+                                "name": "park",
+                                "styleName": "Esri2DPointSymbolsStyle"
+                                
                             }
                         },
                         "scaleRenderers": [
                             {
-                                "scaleFrom": 3000,
+                                "scaleFrom": 10000,
                                 "scaleTo": 50000,
                                 "renderer": {
                                     "type": "heatmap",
-                                    "field": "usto",
+                                    "field": "hoehe",
                                     "colorStops": [
                                         {
                                             "color": "rgba(115, 0, 115, 0)",
@@ -137,14 +118,6 @@
                                 "featureReduction": {
                                     "type": "cluster",
                                     "fields": [
-                                        {
-                                            "name": "usto_total",
-                                            "alias": "Total usto",
-                                            "outStatistic": {
-                                                "onStatisticField": "usto",
-                                                "statisticType": "sum"
-                                            }
-                                        }
                                     ],
                                     "renderer": {
                                         "type": "simple",
@@ -161,22 +134,22 @@
                                         "visualVariables": [
                                             {
                                                 "type": "size",
-                                                "field": "usto_total",
+                                                "field": "cluster_count",
                                                 "stops": [
                                                     {
                                                         "value": 0,
                                                         "size": 8
                                                     },
                                                     {
-                                                        "value": 12,
+                                                        "value": 15,
                                                         "size": 12
                                                     },
                                                     {
-                                                        "value": 500,
+                                                        "value": 30,
                                                         "size": 18
                                                     },
                                                     {
-                                                        "value": 2500,
+                                                        "value": 45,
                                                         "size": 48
                                                     }
                                                 ]
@@ -186,17 +159,10 @@
                                     "clusterRadius": "120px",
                                     "popupTemplate": {
                                         "title": "Cluster summary",
-                                        "content": "This cluster represents {cluster_count} Unternehmen with {usto_total} ustos.",
+                                        "content": "This cluster represents {cluster_count} trees.",
                                         "fieldInfos": [
                                             {
                                                 "fieldName": "cluster_count",
-                                                "format": {
-                                                    "places": 0,
-                                                    "digitSeparator": true
-                                                }
-                                            },
-                                            {
-                                                "fieldName": "usto_total",
                                                 "format": {
                                                     "places": 0,
                                                     "digitSeparator": true
@@ -276,22 +242,19 @@
                 ],
                 "map": {
                     "layers": [
+                        
                         {
-                            "type": "GROUP",
-                            "id": "gwg_ausbau",
-                            "title": "GWG Ausbau",
+                            "id": "trees",
+                            "title": "Trees",
                             "visible": true,
-                            "layers": [
-                                {
-                                    "id": "unternehmen",
-                                    "title": "unternehmen",
-                                    "visible": true,
-                                    "type": "AGS_FEATURE",
-                                    "definitionExpression": "usto > 0",
-                                    "url": "https://dev0026w.conterra.de:6443/arcgis/rest/services/marketing/kls_adressmaster_reti/MapServer/0"
-                                }
-                            ]
+                            "type": "AGS_FEATURE",
+                            "url": "https://services.conterra.de/arcgis/rest/services/mapapps/Baumkataster_Anlage/MapServer/0",
+                            "popupTemplate": {
+                                "title": "Tree Info",
+                                "content": "Tree height: {hoehe}m and trunk diameter: {stammdurchmesser}m. Tree was planted at {pflanzjahr}"
+                            }
                         }
+                            
                     ]
                 },
                 "view": {
