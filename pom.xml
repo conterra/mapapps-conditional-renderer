@@ -217,7 +217,7 @@
                     <!-- add here properties which are used in plugin configuration resolution -->
                     <properties>
                         <!-- deployment of map.apps installation -->
-                        <mapapps.remote.base>.</mapapps.remote.base>
+                        <mapapps.remote.base>https://demos.conterra.de/mapapps</mapapps.remote.base>
                     </properties>
                 </configuration>
             </plugin>
@@ -402,6 +402,34 @@
                 <configuration>
                     <sourceDirectory>${js.build.outputPath}</sourceDirectory>
                     <outputDirectory>${js.build.outputPath}</outputDirectory>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <configuration>
+                    <httpConnector>
+                        <port>${jetty.port}</port>
+                    </httpConnector>
+                    <stopPort>9966</stopPort>
+                    <stopKey>jetty-stop</stopKey>
+                    <stopWait>60000</stopWait>
+                    <scan>0</scan>
+                    <webXml>${basedir}/src/test/webapp/WEB-INF/web.xml</webXml>
+                    <useTestScope>true</useTestScope>
+                    <webApp>
+                        <contextPath>/</contextPath>
+                        <resourceBases>
+                            <resourceBase>${root.build.outputPath}</resourceBase>
+                            <resourceBase>${basedir}/src/test/webapp</resourceBase>
+                        </resourceBases>
+                        <!-- include ct-jsregistry-embedded-<version>.jar as web-fragment provider -->
+                        <webInfIncludeJarPattern>.*/ct-jsregistry-embedded-[^/]*\.jar$</webInfIncludeJarPattern>
+                    </webApp>
+                    <systemProperties>
+                        <!-- set catalina base, so that log files are created in the target directory-->
+                        <catalina.base>${project.build.directory}</catalina.base>
+                    </systemProperties>
                 </configuration>
             </plugin>
             <plugin>
