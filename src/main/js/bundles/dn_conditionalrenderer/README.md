@@ -12,54 +12,35 @@ This bundle makes it possible to create mutliple renderers and feature reduction
 ```json
 "dn_conditionalrenderer": {
     "Config": {
-       "layerRendererScalesMapping": [
+        "layerRendererScalesMapping": [
             {
-                "layerId": "unternehmen",
+                "layerId": "trees",
                 "fallbackRenderer": {
                     "type": "simple",
                     "visualVariables": [
                         {
                             "type": "size",
-                            "field": "usto",
-                            "minDataValue": 1,
-                            "maxDataValue": 85,
+                            "field": "stammdurchmesser",
+                            "minDataValue": 30,
+                            "maxDataValue": 80,
                             "minSize": 2,
                             "maxSize": 30
                         }
                     ],
                     "symbol": {
-                        "type": "simple-marker",
-                        "color": [
-                            127,
-                            132,
-                            61,
-                            255
-                        ],
-                        "angle": 0,
-                        "xoffset": 0,
-                        "yoffset": 0,
-                        "size": 4,
-                        "style": "circle",
-                        "outline": {
-                            "type": "simple-line",
-                            "color": [
-                                0,
-                                0,
-                                0,
-                                255
-                            ],
-                            "width": 0.7,
-                            "style": "solid"
-                        }
+                        "type": "web-style",
+                        "name": "park",
+                        "styleName": "Esri2DPointSymbolsStyle"
+                        
                     }
                 },
                 "scaleRenderers": [
                     {
-                        "scaleFrom": 3000,
+                        "scaleFrom": 10000,
                         "scaleTo": 50000,
                         "renderer": {
                             "type": "heatmap",
-                            "field": "usto",
+                            "field": "hoehe",
                             "colorStops": [
                                 {
                                     "color": "rgba(115, 0, 115, 0)",
@@ -128,14 +109,6 @@ This bundle makes it possible to create mutliple renderers and feature reduction
                         "featureReduction": {
                             "type": "cluster",
                             "fields": [
-                                {
-                                    "name": "usto_total",
-                                    "alias": "Total usto",
-                                    "outStatistic": {
-                                        "onStatisticField": "usto",
-                                        "statisticType": "sum"
-                                    }
-                                }
                             ],
                             "renderer": {
                                 "type": "simple",
@@ -152,22 +125,22 @@ This bundle makes it possible to create mutliple renderers and feature reduction
                                 "visualVariables": [
                                     {
                                         "type": "size",
-                                        "field": "usto_total",
+                                        "field": "cluster_count",
                                         "stops": [
                                             {
                                                 "value": 0,
                                                 "size": 8
                                             },
                                             {
-                                                "value": 12,
+                                                "value": 15,
                                                 "size": 12
                                             },
                                             {
-                                                "value": 500,
+                                                "value": 30,
                                                 "size": 18
                                             },
                                             {
-                                                "value": 2500,
+                                                "value": 45,
                                                 "size": 48
                                             }
                                         ]
@@ -177,17 +150,10 @@ This bundle makes it possible to create mutliple renderers and feature reduction
                             "clusterRadius": "120px",
                             "popupTemplate": {
                                 "title": "Cluster summary",
-                                "content": "This cluster represents {cluster_count} Unternehmen with {usto_total} ustos.",
+                                "content": "This cluster represents {cluster_count} trees.",
                                 "fieldInfos": [
                                     {
                                         "fieldName": "cluster_count",
-                                        "format": {
-                                            "places": 0,
-                                            "digitSeparator": true
-                                        }
-                                    },
-                                    {
-                                        "fieldName": "usto_total",
                                         "format": {
                                             "places": 0,
                                             "digitSeparator": true
@@ -215,17 +181,36 @@ This bundle makes it possible to create mutliple renderers and feature reduction
                         }
                     }
                 ]
-            }]
-        }
+            }
+        ]
     }
 }
 ```
 
+The configuration of the bundle includes one main configuration item: `layerRendererScalesMapping`.<br>
+`layerRendererScalesMapping` is a list of configuration respective to each layer needed to be configured for conditional rendering.<br>
+Each item of the list of `layerRendererScalesMapping` has the following configuration:
+
 | Property                 | Type             | Possible Values | Default | Description           |
 |--------------------------|------------------|-----------------|---------|-----------------------|
 | layerId                  | String           |                 | ""      | Id of layer to applay renderers to |
-| fallbackRenderer         | Object           |                 | {}      | Definition of renderer enabled if no more specific renderer applies |
-| scaleRenderers           | Array of Objects |                 | []      | Definitions of renderers to apply at certain scales. For details see [documentation](https://developers.arcgis.com/javascript/latest/api-reference/esri-renderers-Renderer.html) |
-| fallbackFeatureReduction | Object           |                 | {}      | Definition of feature reduction enabled if no more specific feature reduction applies |
-| scaleFeatureReductions   | Array of Objects |                 | []      | Definitions of feature reductions to apply at certain scales. For details see [documentation](https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-support-FeatureReductionCluster.html)|
+| fallbackRenderer         | Object           |                 | {}      | Definition of renderer enabled if no more specific renderer applies. For details see [documentation](https://developers.arcgis.com/javascript/latest/api-reference/esri-renderers-Renderer.html) |
+| scaleRenderers           | Array of Objects |                 | []      | Definitions of renderers to apply at certain scales. Look below on configuring the list members|
+| fallbackFeatureReduction | Object           |                 | {}      | Definition of feature reduction enabled if no more specific feature reduction applies. For details see [documentation](https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-support-FeatureReductionCluster.html) |
+| scaleFeatureReductions   | Array of Objects |                 | []      | Definitions of feature reductions to apply at certain scales. Look below on configuring the list members|
 
+`scaleRenderes` and `scaleFeatureReductions` are both lists of scale dependent configuration.<br><br>
+`scaleRenderes`: 
+| Property                 | Type             | Possible Values | Default | Description           |
+|--------------------------|------------------|-----------------|---------|-----------------------|
+| scaleFrom                  | Number           |                 |       | Minimum scale |
+| scaleTo         | Number           |                 |       | Maximum scale |
+| renderer           | Object |                 |       | Definitions of renderers to apply at certain scales. For details see [documentation](https://developers.arcgis.com/javascript/latest/api-reference/esri-renderers-Renderer.html) |
+
+
+`scaleFeatureReductions`: 
+| Property                 | Type             | Possible Values | Default | Description           |
+|--------------------------|------------------|-----------------|---------|-----------------------|
+| scaleFrom                  | Number           |                 |       | Minimum scale |
+| scaleTo         | Number           |                 |       | Maximum scale |
+| featureReduction           | Object |                 |       | Definitions of feature reductions to apply at certain scales. For details see [documentation](https://developers.arcgis.com/javascript/latest/api-reference/esri-layers-support-FeatureReductionCluster.html) |
