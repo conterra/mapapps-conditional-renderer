@@ -7,7 +7,7 @@ This bundle makes it possible to create mutliple renderers and feature reduction
 [![devnet-bundle-snapshot](https://github.com/conterra/mapapps-conditional-renderer/actions/workflows/devnet-bundle-snapshot.yml/badge.svg)](https://github.com/conterra/mapapps-conditional-renderer/actions/workflows/devnet-bundle-snapshot.yml)
 
 ## Sample App
-https://demos.conterra.de/mapapps/resources/apps/downloads_conditional-renderer/index.html
+https://demos.conterra.de/mapapps/resources/apps/downloads_conditionalrenderer/index.html
 
 ## Installation Guide
 ⚠️**Requirement: map.apps 4.13.0**
