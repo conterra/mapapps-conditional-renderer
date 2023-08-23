@@ -3,9 +3,6 @@ This bundle makes it possible to create mutliple renderers and feature reduction
 
 ![Screenshot App](https://github.com/conterra/mapapps-query-builder/blob/master/screenshot.JPG)
 
-The Query Builder 3 for Linie 3 can be found in the 3.x branch:
-https://github.com/conterra/mapapps-query-builder/tree/3.x
-
 ## Build Status
 [![devnet-bundle-snapshot](https://github.com/conterra/mapapps-conditional-renderer/actions/workflows/devnet-bundle-snapshot.yml/badge.svg)](https://github.com/conterra/mapapps-conditional-renderer/actions/workflows/devnet-bundle-snapshot.yml)
 
