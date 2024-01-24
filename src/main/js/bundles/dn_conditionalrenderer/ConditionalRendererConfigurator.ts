@@ -58,7 +58,7 @@ export default class ConditionalRendererConfigurator {
         const scaleFeatureReductions = mapping.config.scaleFeatureReductions;
 
         const matchedRenderer =
-            scaleRenderers.find((renderer: CustomRenderer) => scale > renderer.scaleFrom && scale < renderer.scaleTo);
+            scaleRenderers?.find((renderer: CustomRenderer) => scale > renderer.scaleFrom && scale < renderer.scaleTo);
         if (matchedRenderer) {
             mapping.layer.renderer = matchedRenderer.renderer;
         }
@@ -67,7 +67,7 @@ export default class ConditionalRendererConfigurator {
         }
 
         const matchedFeatureReduction =
-            scaleFeatureReductions.find((reduction: CustomFeatureReduction) =>
+            scaleFeatureReductions?.find((reduction: CustomFeatureReduction) =>
                 scale > reduction.scaleFrom && scale < reduction.scaleTo);
         if (matchedFeatureReduction) {
             mapping.layer.featureReduction = matchedFeatureReduction.featureReduction;
