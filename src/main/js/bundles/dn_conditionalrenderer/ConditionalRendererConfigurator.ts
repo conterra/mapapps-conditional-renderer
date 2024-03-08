@@ -17,7 +17,8 @@
 import { InjectedReference } from "apprt-core/InjectedReference";
 import { MapWidgetModel } from "map-widget/api";
 import { CustomFeatureReduction, CustomRenderer, ExtendedView, Mapping } from "./Interfaces";
-
+import * as reactiveUtils from "esri/core/reactiveUtils";
+import Layer from "esri/layers/Layer";
 export default class ConditionalRendererConfigurator {
 
     private mappings: Array<Mapping> = [];
@@ -46,9 +47,16 @@ export default class ConditionalRendererConfigurator {
         layerRendererScalesMapping.forEach(mapping => {
             const layerId = mapping.layerId;
             const map = this._mapWidgetModel.map;
-            const layer = map.allLayers.find((layer: __esri.Layer) => layer.id === layerId);
+            const layer = map.allLayers.find((layer: Layer) => layer.id === layerId);
             if (layer) {
                 this.mappings.push({ layer: layer, config: mapping });
+            } else {
+                const handle = reactiveUtils.watch(
+                    () => map.allLayers.find((layer: Layer) => layer.id === layerId),
+                    (layer) => {
+                        this.mappings.push({ layer: layer, config: mapping });
+                        handle.remove();
+                    });
             }
         });
     }
