@@ -12,7 +12,7 @@ This bundle makes it possible to create mutliple renderers and feature reduction
 ```json
 "dn_conditionalrenderer": {
     "Config": {
-        "layerRendererScalesMapping": [
+        "layerRendererScalesMapping2D": [
             {
                 "layerId": "trees",
                 "fallbackRenderer": {
@@ -182,14 +182,16 @@ This bundle makes it possible to create mutliple renderers and feature reduction
                     }
                 ]
             }
-        ]
+        ],
+        "layerRendererScalesMapping3D": []
     }
 }
 ```
 
-The configuration of the bundle includes one main configuration item: `layerRendererScalesMapping`.<br>
-`layerRendererScalesMapping` is a list of configuration respective to each layer needed to be configured for conditional rendering.<br>
-Each item of the list of `layerRendererScalesMapping` has the following configuration:
+The configuration of the bundle includes two main configuration item: `layerRendererScalesMapping2D` and `layerRendererScalesMapping3D`.<br>
+These are lists of configurations respective to each layer needed to be configured for conditional rendering.<br>
+`layerRendererScalesMapping2D` configures all 2D layers and `layerRendererScalesMapping3D` all 3D layers. Based on the viewmode of the view these will replace each other.<br>
+Each item of the list of `layerRendererScalesMapping`s has the following configuration:
 
 | Property                 | Type             | Possible Values | Default | Description           |
 |--------------------------|------------------|-----------------|---------|-----------------------|

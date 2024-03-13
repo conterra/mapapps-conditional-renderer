@@ -16,7 +16,10 @@
 export default {
     root: ({
         bundleName: "Conditional Renderer",
-        bundleDescription: "This bundle makes it possible to create mutliple renderers and feature reductions for a layer to be used in different scale ranges, all by configuration."
+        bundleDescription: "This bundle makes it possible to create mutliple renderers and feature reductions for a layer to be used in different scale ranges, all by configuration.",
+        undefinedView: "conditionRenderer: No 'view' was found",
+        noRendererDefined: "conditionRenderer: No renderer defined",
+        rendererIncorrectDefined: "conditionRenderer: The renderer are wrongfully defined"
     }),
     "de": true
 };

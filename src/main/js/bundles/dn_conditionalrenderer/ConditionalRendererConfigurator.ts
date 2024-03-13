@@ -16,49 +16,71 @@
 
 import { InjectedReference } from "apprt-core/InjectedReference";
 import { MapWidgetModel } from "map-widget/api";
-import { CustomFeatureReduction, CustomRenderer, ExtendedView, Mapping } from "./Interfaces";
+import { CustomFeatureReduction, CustomRenderer, ExtendedView, Mapping, Config } from "./Interfaces";
 import * as reactiveUtils from "esri/core/reactiveUtils";
 import Layer from "esri/layers/Layer";
+
 export default class ConditionalRendererConfigurator {
 
     private mappings: Array<Mapping> = [];
 
     private _mapWidgetModel: InjectedReference<MapWidgetModel>;
     private _properties: InjectedReference<Record<string, any>>;
+    private _logService: InjectedReference<any>;
+    private _i18n: InjectedReference<any>;
+    private scaleWatcher: any;
 
     protected activate(): void {
         this.getView().then(view => {
-            this.iterateLayerRendererScalesMappings();
-            this.mappings.forEach((mapping: Mapping) => {
-                this.changeLayerRendererForScale(mapping, view.scale);
-            });
+            this.activationWorkflow(view);
 
-            view.watch("scale", (newScale) => {
-                this.mappings.forEach((mapping: Mapping) => {
-                    this.changeLayerRendererForScale(mapping, newScale);
+            this._mapWidgetModel?.watch("view", () => {
+                this.scaleWatcher.remove();
+                this.getView().then(view => {
+                    this.activationWorkflow(view);
                 });
             });
         });
     }
 
-    private iterateLayerRendererScalesMappings(): void {
-        const layerRendererScalesMapping = this._properties.layerRendererScalesMapping;
+    private activationWorkflow(view: ExtendedView): void{
+        if (this._mapWidgetModel?.viewmode === "2D"){
+            this.iterateLayerRendererScalesMappings(this._properties?.layerRendererScalesMapping2D);
+        }
+        else {
+            this.iterateLayerRendererScalesMappings(this._properties?.layerRendererScalesMapping3D);
+        }
+        this.createScaleWatcher(view);
+    }
 
-        layerRendererScalesMapping.forEach(mapping => {
-            const layerId = mapping.layerId;
-            const map = this._mapWidgetModel.map;
-            const layer = map.allLayers.find((layer: Layer) => layer.id === layerId);
-            if (layer) {
-                this.mappings.push({ layer: layer, config: mapping });
-            } else {
-                const handle = reactiveUtils.watch(
-                    () => map.allLayers.find((layer: Layer) => layer.id === layerId),
-                    (layer) => {
-                        this.mappings.push({ layer: layer, config: mapping });
-                        handle.remove();
-                    });
-            }
-        });
+    private iterateLayerRendererScalesMappings(viewmodeLayerRendererScalesMapping: Array<Config>): void {
+        const i18n = this._i18n.get();
+        if (Array.isArray(viewmodeLayerRendererScalesMapping)){
+            viewmodeLayerRendererScalesMapping.forEach(mapping => {
+                const layerId = mapping.layerId;
+                const map = this._mapWidgetModel?.map;
+                const layer = map?.allLayers.find((layer: Layer) => layer.id === layerId);
+                if (layer) {
+                    this.mappings.push({ layer: layer, config: mapping });
+                }
+                else {
+                    const handle = reactiveUtils.watch(
+                        () => map?.allLayers.find((layer: Layer) => layer.id === layerId),
+                        (layer) => {
+                            if(layer !== undefined) {
+                                this.mappings.push({ layer: layer, config: mapping });
+                                handle.remove();
+                            }
+                            else{
+                                this._logService.info(i18n.rendererIncorrectDefined);
+                            }
+                        });
+                }
+            });
+        }
+        else{
+            this._logService.info(i18n.noRendererDefined);
+        }
     }
 
     private changeLayerRendererForScale(mapping: Mapping, scale: number): void {
@@ -85,16 +107,30 @@ export default class ConditionalRendererConfigurator {
         }
     }
 
+    private createScaleWatcher(view: ExtendedView): void {
+        this.scaleWatcher = view.watch("scale", (newScale) => {
+            this.mappings.forEach((mapping: Mapping) => {
+                this.changeLayerRendererForScale(mapping, newScale);
+            });
+        });
+    }
+
     private getView(): Promise<ExtendedView> {
+        const i18n = this._i18n.get();
         const mapWidgetModel = this._mapWidgetModel;
 
         return new Promise((resolve) => {
-            if (mapWidgetModel.view) {
+            if (mapWidgetModel?.view) {
                 resolve(mapWidgetModel.view);
             } else {
-                const watcher = mapWidgetModel.watch("view", ({ value: view }) => {
-                    watcher.remove();
-                    resolve(view);
+                const watcher = mapWidgetModel?.watch("view", ({ value: view }) => {
+                    watcher?.remove();
+                    if(view !== undefined){
+                        resolve(view);
+                    }
+                    else {
+                        this._logService.warn(i18n.undefinedView);
+                    }
                 });
             }
         });
