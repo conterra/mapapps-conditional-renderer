@@ -183,7 +183,47 @@ This bundle makes it possible to create mutliple renderers and feature reduction
                 ]
             }
         ],
-        "layerRendererScalesMapping3D": []
+        "layerRendererScalesMapping3D": [
+            {
+                "layerId": "locations",
+                "fallbackRenderer": {
+                    "type": "simple",
+                    "symbol": {
+                        "type": "simple-marker",
+                        "style": "circle",
+                        "color": [80, 127, 36, 255],
+                        "size": 4.0,
+                            "width": 0.7,
+                            "color": [0, 0, 0, 255]
+                        }
+                },
+                "scaleRenderers": [
+                    {
+                        "scaleFrom": 0,
+                    	"scaleTo": 3100,
+                        "renderer": {
+                            "type": "simple",
+                            "symbol": {
+                                "type": "web-style",
+                                "styleName": "EsriInfrastructureStyle",
+                                "name": "Wind_Trubine",
+                                "portal": "https://www.arcgis.com"
+                            },
+                            "label": "location heights",
+                            "visualVariables": [
+                                {
+                                    "type": "size",
+                                    "field": "height",
+                                    "axis": "height"
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "fallbackFeatureReduction": null,
+                "scaleFeatureReductions": []
+            }
+        ]
     }
 }
 ```
