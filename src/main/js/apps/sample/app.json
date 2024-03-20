@@ -21,7 +21,7 @@
     "bundles": {
         "dn_conditionalrenderer": {
             "Config": {
-                "layerRendererScalesMapping": [
+                "layerRendererScalesMapping2D": [
                     {
                         "layerId": "trees",
                         "fallbackRenderer": {
@@ -40,7 +40,6 @@
                                 "type": "web-style",
                                 "name": "park",
                                 "styleName": "Esri2DPointSymbolsStyle"
-                                
                             }
                         },
                         "scaleRenderers": [
@@ -242,7 +241,7 @@
                 ],
                 "map": {
                     "layers": [
-                        
+
                         {
                             "id": "trees",
                             "title": "Trees",
@@ -254,7 +253,7 @@
                                 "content": "Tree height: {hoehe}m and trunk diameter: {stammdurchmesser}m. Tree was planted at {pflanzjahr}"
                             }
                         }
-                            
+
                     ]
                 },
                 "view": {
