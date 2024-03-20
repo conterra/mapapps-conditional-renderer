@@ -72,14 +72,14 @@ export default class ConditionalRendererConfigurator {
                                 handle.remove();
                             }
                             else{
-                                this._logService.info(i18n.rendererIncorrectDefined);
+                                this._logService.info(i18n.warnings.rendererIncorrectDefined);
                             }
                         });
                 }
             });
         }
         else{
-            this._logService.info(i18n.noRendererDefined);
+            this._logService.info(i18n.warnings.noRendererDefined);
         }
     }
 
@@ -129,7 +129,7 @@ export default class ConditionalRendererConfigurator {
                         resolve(view);
                     }
                     else {
-                        this._logService.warn(i18n.undefinedView);
+                        this._logService.warn(i18n.warnings.undefinedView);
                     }
                 });
             }
