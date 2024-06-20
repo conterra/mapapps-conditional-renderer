@@ -15,5 +15,10 @@
  */
 export default {
     bundleName: "Conditional Renderer",
-    bundleDescription: "Dieses Bundle erlaubt es abhängig vom Maßstab verschiedene Renderer zu benutzen."
+    bundleDescription: "Dieses Bundle erlaubt es abhängig vom Maßstab verschiedene Renderer zu benutzen.",
+    warnings: {
+        undefinedView: "conditionalRenderer: Es konnte kein 'view' gefunden werden",
+        noRendererDefined: "conditionalRenderer: Es wurden keine Renderer erstellt",
+        rendererIncorrectDefined: "conditionalRenderer: Die Renderer wurden fehlerhaft definiert"
+    }
 };
