@@ -44,13 +44,20 @@ export default class ConditionalRendererConfigurator {
     }
 
     private activationWorkflow(view: ExtendedView): void{
+        const i18n = this._i18n.get();
         if (this._mapWidgetModel?.viewmode === "2D"){
-            this.iterateLayerRendererScalesMappings(this._properties?.layerRendererScalesMapping2D);
+            const layerRendererScalesMapping2D = this._properties?.layerRendererScalesMapping2D ?
+                this._properties?.layerRendererScalesMapping2D : this._properties?.layerRendererScalesMapping;
+            this.iterateLayerRendererScalesMappings(layerRendererScalesMapping2D);
+            this.createScaleWatcher(view);
         }
-        else {
+        else if (this._mapWidgetModel?.viewmode === "3D"){
             this.iterateLayerRendererScalesMappings(this._properties?.layerRendererScalesMapping3D);
+            this.createScaleWatcher(view);
         }
-        this.createScaleWatcher(view);
+        else{
+            this._logService.warn(i18n.warnings.undefinedView);
+        }
     }
 
     private iterateLayerRendererScalesMappings(viewmodeLayerRendererScalesMapping: Array<Config>): void {
@@ -59,9 +66,11 @@ export default class ConditionalRendererConfigurator {
             viewmodeLayerRendererScalesMapping.forEach(mapping => {
                 const layerId = mapping.layerId;
                 const map = this._mapWidgetModel?.map;
+                const scale = this._mapWidgetModel?.view?.scale;
                 const layer = map?.allLayers.find((layer: Layer) => layer.id === layerId);
                 if (layer) {
                     this.mappings.push({ layer: layer, config: mapping });
+                    this.changeLayerRendererForScale({ layer: layer, config: mapping }, scale);
                 }
                 else {
                     const handle = reactiveUtils.watch(
@@ -69,6 +78,7 @@ export default class ConditionalRendererConfigurator {
                         (layer) => {
                             if(layer !== undefined) {
                                 this.mappings.push({ layer: layer, config: mapping });
+                                this.changeLayerRendererForScale({ layer: layer, config: mapping }, scale);
                                 handle.remove();
                             }
                             else{
