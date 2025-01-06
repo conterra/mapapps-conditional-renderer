@@ -4,6 +4,7 @@
     "title": "${bundleName}",
     "description": "${bundleDescription}",
     "vendor": "con terra GmbH",
+    "i18n": ["bundle"],
     "main": "",
     "productName": "devnet-mapapps-conditional-renderer",
     "dependencies": {
@@ -16,7 +17,16 @@
             "provides": "conditional_renderer.ConditionalRendererConfigurator",
             "immediate": true,
             "properties":{
-              "layerRendererScalesMapping":[
+              "layerRendererScalesMapping2D":[
+                {
+                  "layerId": "",
+                  "fallbackRenderer":{},
+                  "scaleRenderers":[],
+                  "fallbackFeatureReduction": {},
+                  "scaleFeatureReductions":[]
+                }
+              ],
+              "layerRendererScalesMapping3D":[
                 {
                   "layerId": "",
                   "fallbackRenderer":{},
@@ -30,6 +40,10 @@
                 {
                     "name": "_mapWidgetModel",
                     "providing": "map-widget.MapWidgetModel"
+                },
+                {
+                  "name": "_logService",
+                  "providing": "ct.framework.api.LogService"
                 }
             ]
         }
