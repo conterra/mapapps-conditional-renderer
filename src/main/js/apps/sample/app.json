@@ -1,22 +1,44 @@
 {
+    "properties": {
+        "title": "${apptitle}"
+    },
     "load": {
         "bundleLocations": [
             "localbundles",
             "bundles"
         ],
         "allowedBundles": [
-            "console",
-            "system@^4.6.0",
-            "splashscreen@^4.6.0",
-            "templatelayout@^4.6.0",
-            "template-seasons@^4.6.0",
-            "theme-everlasting@^4.6.0",
-            "toolset@^4.6.0",
-            "map-init@^4.6.0",
+            "agssearch",
+            "banner",
+            "basemaptoggler",
+            "languagetoggler",
+            "locateme",
+            "locator-store",
+            "map-init",
+            "map-preload-2D",
+            "mapnavigation",
+            "measurement-2d",
+            "notifier",
+            "parameter-url",
+            "popups-default",
+            "printing",
+            "result-ui",
+            "scalebar",
+            "search-ui",
+            "selection-ui",
+            "sketching",
+            "splashscreen",
+            "system",
+            "template-seasons",
+            "templatelayout",
+            "theme-autumn",
             "toc",
-            "agssearch@^4.6.0",
+            "toolset",
             "viewmodeswitcher",
-            "dn_conditionalrenderer"
+            "dn_imprintprivacy"
+        ],
+        "i18n": [
+            "bundle"
         ]
     },
     "bundles": {
@@ -199,17 +221,27 @@
                             "symbol": {
                                 "type": "simple-marker",
                                 "style": "circle",
-                                "color": [80, 127, 36, 255],
+                                "color": [
+                                    80,
+                                    127,
+                                    36,
+                                    255
+                                ],
                                 "size": 4.0,
                                 "angle": 0,
                                 "xoffset": 0,
                                 "yoffset": 0,
                                 "outline": {
-                                  "width": 0.7,
-                                  "color": [0, 0, 0, 255]
+                                    "width": 0.7,
+                                    "color": [
+                                        0,
+                                        0,
+                                        0,
+                                        255
+                                    ]
                                 },
                                 "width": 0
-                              }
+                            }
                         },
                         "scaleRenderers": [
                             {
@@ -251,96 +283,104 @@
                                 "scaleFrom": 2001,
                                 "scaleTo": 15000,
                                 "renderer": {
-                                  "type": "simple",
-                                  "symbol": {
-                                    "type": "point-3d",
-                                    "symbolLayers": [
-                                        {
-                                          "type": "object",
-                                          "resource": { "primitive": "cylinder" },
-                                          "width": 2
-                                        }
-                                    ]
-                                  },
-                                  "label": "Antenna heights",
-                                  "visualVariables": [
-                                    {
-                                      "type": "size",
-                                      "field": "hoehe",
-                                      "axis": "height"
+                                    "type": "simple",
+                                    "symbol": {
+                                        "type": "point-3d",
+                                        "symbolLayers": [
+                                            {
+                                                "type": "object",
+                                                "resource": {
+                                                    "primitive": "cylinder"
+                                                },
+                                                "width": 2
+                                            }
+                                        ]
                                     },
-                                    {
-                                      "type": "color",
-                                      "field": "hoehe",
-                                      "stops": [
+                                    "label": "Antenna heights",
+                                    "visualVariables": [
                                         {
-                                          "value": 5,
-                                          "color": "green"
+                                            "type": "size",
+                                            "field": "hoehe",
+                                            "axis": "height"
                                         },
                                         {
-                                          "value": 200,
-                                          "color": "green"
+                                            "type": "color",
+                                            "field": "hoehe",
+                                            "stops": [
+                                                {
+                                                    "value": 5,
+                                                    "color": "green"
+                                                },
+                                                {
+                                                    "value": 200,
+                                                    "color": "green"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "type": "size",
+                                            "axis": "width-and-depth",
+                                            "useSymbolValue": true
                                         }
-                                      ]
-                                    },
-                                    {
-                                      "type": "size",
-                                      "axis": "width-and-depth",
-                                      "useSymbolValue": true 
-                                    }
-                                  ]
+                                    ]
                                 }
-                              }
+                            }
                         ]
                     }
-                    
                 ]
             }
         },
         "agssearch": {
-            "AGSStore": [
-                {
-                    "title": "St\u00F6rungen",
-                    "description": "Durchsucht die Beschreibung aller St\u00F6rungsmeldugen.",
-                    "omniSearchLabelAttr": "${details} (${melder})",
-                    "omniSearchSearchAttr": "details",
-                    "idProperty": "objectid",
-                    "url": "https://services.conterra.de/arcgis/rest/services/training/stoerungen/MapServer/0",
-                    "useIn": [
-                        "omnisearch",
-                        "selection"
-                    ],
-                    "filterOptions": {
-                        "suggestContains": true
-                    },
-                    "omniSearchTypingDelay": 500,
-                    "omniSearchPageSize": 20,
-                    "omniSearchDefaultLabel": "Suchbegriff eingeben...",
-                    "fetchIdProperty": true,
-                    "id": "stoerungStore",
-                    "pid": "agssearch-AGSStore-0",
-                    "type": "Dynamisch"
+            "AutoStoreRegistration": {
+                "componentEnabled": true
+            }
+        },
+        "banner": {
+            "BannerWidget": {
+                "label": "Developer Network",
+                "image": "resource('${app}:/assets/logo.svg')",
+                "imageWidth": 150,
+                "imagePosition": "above",
+                "link": "http://conterra.github.io"
+            }
+        },
+        "basemaptoggler": {
+            "Config": {
+                "itemStyles": {
+                    "gray": "icon-thumbnail",
+                    "streets": "icon-thumbnail",
+                    "satellite": "icon-thumbnail",
+                    "hybrid": "icon-thumbnail"
                 }
-            ]
+            }
         },
         "map-init": {
             "Config": {
                 "basemaps": [
                     {
+                        "id": "gray",
+                        "basemap": "gray-vector",
+                        "title": "${map.basemaps.gray}",
+                        "thumbnailUrl": "resource('${app}:/assets/gray.png')",
+                        "selected": true
+                    },
+                    {
                         "id": "streets",
                         "basemap": "streets-vector",
-                        "title": "Strassen",
-                        "selected": true
+                        "title": "${map.basemaps.streets}",
+                        "thumbnailUrl": "resource('${app}:/assets/streets.png')"
                     },
                     {
                         "id": "satellite",
                         "basemap": "satellite",
-                        "title": "Satellit"
+                        "title": "${map.basemaps.topo}",
+                        "thumbnailUrl": "resource('${app}:/assets/topo.png')"
                     },
                     {
                         "id": "hybrid",
                         "basemap": "hybrid",
-                        "title": "Hybrid"
+                        "title": "${map.basemaps.hybrid}",
+                        "thumbnailUrl": "resource('${app}:/assets/hybrid.png')"
                     }
                 ],
                 "map": {
@@ -355,7 +395,7 @@
                                 "title": "Tree Info",
                                 "content": "Tree height: {hoehe}m and trunk diameter: {stammdurchmesser}m. Tree was planted at {pflanzjahr}"
                             },
-                            "elevationInfo" : {
+                            "elevationInfo": {
                                 "mode": "relative-to-ground"
                             }
                         }
@@ -373,22 +413,113 @@
                 }
             }
         },
+        "toc": {
+            "Config": {
+                "showBasemaps": true,
+                "showLayerLegend": true
+            }
+        },
         "toolset": {
             "ToolsetManager": {
                 "toolsets": [
                     {
-                        "id": "defaultToolSet",
+                        "id": "mapview_tools",
                         "tools": [
-                            "*"
+                            "locateMeTool",
+                            "zoomInTool",
+                            "zoomOutTool",
+                            "compassTool",
+                            "restoreInitialViewTool",
+                            "viewmodeSwitcherTool"
                         ],
                         "registerWidget": {
-                            "widgetRole": "map_topleft"
+                            "widgetRole": "mapview_tools"
                         },
                         "container": "ignore",
                         "windowType": "container",
-                        "cssClass": "muted"
+                        "cssClass": "muted",
+                        "tooltipPositions": [
+                            "before",
+                            "above",
+                            "below",
+                            "after"
+                        ]
+                    },
+                    {
+                        "id": "drawer_left",
+                        "title": "${tools.drawerLeft}",
+                        "cssClass": "ct-main-app-menu",
+                        "tools": [
+                            "selection-ui-tool",
+                            "sketchToggleTool",
+                            "measuring_tools",
+                            "printingToggleTool"
+                        ],
+                        "registerWidget": {
+                            "widgetRole": "drawer_button"
+                        },
+                        "container": "ignore",
+                        "windowType": "drawer_left",
+                        "tooltipPositions": [
+                            "after",
+                            "above",
+                            "below",
+                            "before"
+                        ]
+                    },
+                    {
+                        "id": "measuring_tools",
+                        "title": "${tools.measuring}",
+                        "iconClass": "icon-editor-table",
+                        "tools": [
+                            "distanceMeasurement2DToggleTool",
+                            "areaMeasurement2DToggleTool"
+                        ],
+                        "container": "ignore",
+                        "registerTool": true,
+                        "windowType": "menuitem",
+                        "tooltipPositions": [
+                            "after"
+                        ]
                     }
                 ]
+            }
+        },
+        "dn_imprintprivacy": {
+            "ToolHandler": {
+                "imprintUrls": [
+                    {
+                        "locale": "de",
+                        "url": "https://www.conterra.de/impressum"
+                    },
+                    {
+                        "locale": "en",
+                        "url": "https://www.con-terra.com/imprint"
+                    }
+                ],
+                "privacyUrls": [
+                    {
+                        "locale": "de",
+                        "url": "https://www.conterra.de/datenschutzhinweise"
+                    },
+                    {
+                        "locale": "en",
+                        "url": "https://www.con-terra.com/privacy-statements"
+                    }
+                ],
+                "toolsetDefinition": {
+                    "id": "imprintprivacyToolset",
+                    "tools": [
+                        "imprintTool",
+                        "privacyStatementsTool"
+                    ],
+                    "registerWidget": {
+                        "widgetRole": "footer_right"
+                    },
+                    "container": "ignore",
+                    "windowType": "container",
+                    "cssClass": "showToolLabels"
+                }
             }
         }
     }
