@@ -35,6 +35,7 @@
             "toc",
             "toolset",
             "viewmodeswitcher",
+            "dn_conditionalrenderer",
             "dn_imprintprivacy"
         ],
         "i18n": [
@@ -179,8 +180,8 @@
                                     },
                                     "clusterRadius": "120px",
                                     "popupTemplate": {
-                                        "title": "Cluster summary",
-                                        "content": "This cluster represents {cluster_count} trees.",
+                                        "title": "${map.layers.clusterPopupTitle}",
+                                        "content": "${map.layers.clusterPopupContent}",
                                         "fieldInfos": [
                                             {
                                                 "fieldName": "cluster_count",
@@ -387,13 +388,13 @@
                     "layers": [
                         {
                             "id": "trees",
-                            "title": "Trees",
+                            "title": "${map.layers.treeLayerTitle}",
                             "visible": true,
                             "type": "AGS_FEATURE",
                             "url": "https://services.conterra.de/arcgis/rest/services/mapapps/Baumkataster_Anlage/MapServer/0",
                             "popupTemplate": {
-                                "title": "Tree Info",
-                                "content": "Tree height: {hoehe}m and trunk diameter: {stammdurchmesser}m. Tree was planted at {pflanzjahr}"
+                                "title": "${map.layers.treeLayerPopupTitle}",
+                                "content": "${map.layers.treeLayerPopupContent}"
                             },
                             "elevationInfo": {
                                 "mode": "relative-to-ground"
