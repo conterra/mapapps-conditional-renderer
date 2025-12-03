@@ -17,8 +17,8 @@
 import { InjectedReference } from "apprt-core/InjectedReference";
 import { MapWidgetModel } from "map-widget/api";
 import { CustomFeatureReduction, CustomRenderer, ExtendedView, Mapping, Config } from "./Interfaces";
-import * as reactiveUtils from "esri/core/reactiveUtils";
-import Layer from "esri/layers/Layer";
+import * as reactiveUtils from "@arcgis/core/core/reactiveUtils";
+import Layer from "@arcgis/core/layers/Layer";
 
 export default class ConditionalRendererConfigurator {
 
