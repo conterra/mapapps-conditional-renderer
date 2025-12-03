@@ -8,7 +8,7 @@
     "main": "",
     "productName": "devnet-mapapps-conditional-renderer",
     "dependencies": {
-        "esri": "^4.6.0"
+        "@arcgis/core": "^4.33.0"
     },
     "components": [
         {
