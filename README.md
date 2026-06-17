@@ -4,7 +4,7 @@
 # Conditional Renderer
 This bundle makes it possible to create mutliple renderers and feature reductions for a layer to be used in different scale ranges, all by configuration.
 
-![Screenshot App](https://github.com/conterra/mapapps-conditional-renderer/blob/main/screenshot.JPG)
+![Screenshot App](https://github.com/conterra/mapapps-conditional-renderer/blob/main/screenshot.png)
 
 ## Sample App
 https://demos.conterra.de/mapapps/resources/apps/public_demo_conditionalrenderer/index.html
